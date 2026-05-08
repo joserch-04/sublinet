@@ -19,8 +19,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser({ id: 'adm-1', name: 'Admin SubliNet', email, role: 'admin' });
       return true;
     }
-    if (email === 'cliente@demo.com' && password === 'demo123') {
-      setUser({ id: 'usr-1', name: 'Carlos Mendoza', email, role: 'customer' });
+    if (email === 'jose@gmail.com' && password === 'demo123') {
+      setUser({ id: 'usr-1', name: 'Jose', email, role: 'customer' });
       return true;
     }
     return false;

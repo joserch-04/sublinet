@@ -1,9 +1,15 @@
 import { createContext, useContext, useState, useCallback, type ReactNode } from 'react';
 import type { CartItem, Product } from '@/types';
 
+interface DesignPosition {
+  x: number;
+  y: number;
+  scale: number;
+}
+
 interface CartContextType {
   items: CartItem[];
-  addItem: (product: Product, designUrl: string | null, color: string, size?: string) => void;
+  addItem: (product: Product, designUrl: string | null, color: string, size?: string, designPosition?: DesignPosition) => void;
   removeItem: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
   clearCart: () => void;
@@ -16,7 +22,7 @@ const CartContext = createContext<CartContextType | null>(null);
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
 
-  const addItem = useCallback((product: Product, designUrl: string | null, color: string, size?: string) => {
+  const addItem = useCallback((product: Product, designUrl: string | null, color: string, size?: string, designPosition?: DesignPosition) => {
     setItems(prev => {
       const existing = prev.find(
         i => i.product.id === product.id && i.selectedColor === color && i.selectedSize === size
@@ -28,7 +34,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
             : i
         );
       }
-      return [...prev, { product, quantity: 1, designUrl, selectedColor: color, selectedSize: size }];
+      return [...prev, { product, quantity: 1, designUrl, selectedColor: color, selectedSize: size, designPosition }];
     });
   }, []);
 

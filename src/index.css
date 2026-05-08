@@ -8,22 +8,22 @@
   }
   body {
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    @apply bg-ink-50 text-ink-900 antialiased;
+    @apply bg-gray-50 text-[#111827] antialiased;
   }
 }
 
 @layer components {
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-brand-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-brand-500/25 transition-all hover:bg-brand-700 hover:shadow-brand-500/40 active:scale-[0.98];
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-[#0F4CFF] px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-[#0F4CFF]/25 transition-all hover:bg-[#0d3fd9] hover:shadow-[#0F4CFF]/40 active:scale-[0.98];
   }
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-white px-6 py-3 text-sm font-semibold text-ink-700 shadow-sm ring-1 ring-ink-200 transition-all hover:bg-ink-50 hover:ring-ink-300 active:scale-[0.98];
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-white px-6 py-3 text-sm font-semibold text-[#111827] shadow-sm ring-1 ring-gray-200 transition-all hover:bg-gray-50 hover:ring-gray-300 active:scale-[0.98];
   }
   .card {
-    @apply rounded-2xl bg-white p-6 shadow-sm ring-1 ring-ink-100 transition-shadow hover:shadow-md;
+    @apply rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-100 transition-shadow hover:shadow-md;
   }
   .input-field {
-    @apply w-full rounded-xl border border-ink-200 bg-white px-4 py-3 text-sm text-ink-900 placeholder-ink-400 outline-none transition-all focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20;
+    @apply w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-[#111827] placeholder-gray-400 outline-none transition-all focus:border-[#0F4CFF] focus:ring-2 focus:ring-[#0F4CFF]/20;
   }
   .section-padding {
     @apply px-4 py-16 sm:px-6 lg:px-8 xl:px-12;

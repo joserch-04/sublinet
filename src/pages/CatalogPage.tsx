@@ -38,12 +38,12 @@ export default function CatalogPage() {
   return (
     <div className="animate-fade-in">
       {/* Header */}
-      <div className="border-b border-ink-100 bg-white">
+      <div className="border-b border-gray-100 bg-white">
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold tracking-tight text-ink-900 sm:text-4xl">
+          <h1 className="text-3xl font-bold tracking-tight text-[#111827] sm:text-4xl">
             Catálogo de productos
           </h1>
-          <p className="mt-2 text-ink-500">Encuentra el producto perfecto para tu diseño</p>
+          <p className="mt-2 text-gray-500">Encuentra el producto perfecto para tu diseño</p>
         </div>
       </div>
 
@@ -52,23 +52,23 @@ export default function CatalogPage() {
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           {/* Search */}
           <div className="relative max-w-md flex-1">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-400" />
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
             <input
               type="text"
               placeholder="Buscar productos..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="input-field pl-10"
+              className="w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 pl-10 text-sm text-[#111827] placeholder-gray-400 outline-none transition-all focus:border-[#0F4CFF] focus:ring-2 focus:ring-[#0F4CFF]/20"
             />
           </div>
 
           {/* Sort */}
           <div className="flex items-center gap-2">
-            <SlidersHorizontal className="h-4 w-4 text-ink-400" />
+            <SlidersHorizontal className="h-4 w-4 text-gray-400" />
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-              className="input-field w-auto py-2 pr-8"
+              className="rounded-xl border border-gray-200 bg-white px-4 py-2 pr-8 text-sm text-[#111827] outline-none transition-all focus:border-[#0F4CFF] focus:ring-2 focus:ring-[#0F4CFF]/20"
             >
               <option value="popular">Más populares</option>
               <option value="price-asc">Precio: menor a mayor</option>
@@ -85,8 +85,8 @@ export default function CatalogPage() {
               onClick={() => setActiveCategory(cat.id)}
               className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${
                 activeCategory === cat.id
-                  ? 'bg-brand-600 text-white shadow-md shadow-brand-500/25'
-                  : 'bg-white text-ink-600 ring-1 ring-ink-200 hover:bg-ink-50'
+                  ? 'bg-[#0F4CFF] text-white shadow-md shadow-[#0F4CFF]/25'
+                  : 'bg-white text-gray-600 ring-1 ring-gray-200 hover:bg-gray-50'
               }`}
             >
               {cat.name}
@@ -96,7 +96,7 @@ export default function CatalogPage() {
 
         {/* Results */}
         <div className="mt-8">
-          <p className="mb-4 text-sm text-ink-500">
+          <p className="mb-4 text-sm text-gray-500">
             {filteredProducts.length} producto{filteredProducts.length !== 1 ? 's' : ''} encontrado
             {filteredProducts.length !== 1 ? 's' : ''}
           </p>
@@ -108,10 +108,10 @@ export default function CatalogPage() {
               ))}
             </div>
           ) : (
-            <div className="flex flex-col items-center justify-center rounded-2xl bg-ink-50 py-20">
-              <Search className="h-12 w-12 text-ink-300" />
-              <h3 className="mt-4 text-lg font-semibold text-ink-700">No se encontraron productos</h3>
-              <p className="mt-1 text-sm text-ink-500">Intenta con otra búsqueda o categoría</p>
+            <div className="flex flex-col items-center justify-center rounded-2xl bg-gray-50 py-20">
+              <Search className="h-12 w-12 text-gray-300" />
+              <h3 className="mt-4 text-lg font-semibold text-gray-700">No se encontraron productos</h3>
+              <p className="mt-1 text-sm text-gray-500">Intenta con otra búsqueda o categoría</p>
             </div>
           )}
         </div>

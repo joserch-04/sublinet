@@ -19,17 +19,21 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-ink-100 bg-white/80 backdrop-blur-xl">
+    <nav className="sticky top-0 z-50 border-b border-gray-100 bg-white/80 backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
-        {/* Logo */}
-        <Link to="/" className="flex items-center gap-2">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-brand-500 to-brand-700 text-white">
-            <span className="text-lg font-bold">S</span>
-          </div>
-          <span className="text-xl font-bold tracking-tight text-ink-900">
-            Subli<span className="text-brand-600">Net</span>
-          </span>
-        </Link>
+
+       {/* Logo */}
+      <Link to="/" className="flex items-center gap-3">
+        <img
+         src="public/images/SUBLINET_LOGO.png"
+         alt="SubliNet Logo"
+       className="h-12 w-auto object-contain"
+        />
+
+        <span className="text-xl font-bold tracking-tight text-[#0F4CFF]">
+          SUBL<span className="text-[#00D084]">INET</span>
+         </span>
+</Link>
 
         {/* Desktop Nav */}
         <div className="hidden items-center gap-1 md:flex">
@@ -39,8 +43,8 @@ export default function Navbar() {
               to={link.to}
               className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
                 isActive(link.to)
-                  ? 'bg-brand-50 text-brand-700'
-                  : 'text-ink-600 hover:bg-ink-50 hover:text-ink-900'
+                  ? 'bg-[#0F4CFF]/10 text-[#0F4CFF]'
+                  : 'text-gray-600 hover:bg-gray-50 hover:text-[#111827]'
               }`}
             >
               {link.label}
@@ -51,8 +55,8 @@ export default function Navbar() {
               to="/admin"
               className={`flex items-center gap-1.5 rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
                 isActive('/admin')
-                  ? 'bg-brand-50 text-brand-700'
-                  : 'text-ink-600 hover:bg-ink-50 hover:text-ink-900'
+                  ? 'bg-[#0F4CFF]/10 text-[#0F4CFF]'
+                  : 'text-gray-600 hover:bg-gray-50 hover:text-[#111827]'
               }`}
             >
               <Shield className="h-4 w-4" />
@@ -65,11 +69,11 @@ export default function Navbar() {
         <div className="flex items-center gap-2">
           <Link
             to="/carrito"
-            className="relative rounded-lg p-2 text-ink-600 transition-colors hover:bg-ink-50 hover:text-ink-900"
+            className="relative rounded-lg p-2 text-gray-600 transition-colors hover:bg-gray-50 hover:text-[#111827]"
           >
             <ShoppingCart className="h-5 w-5" />
             {totalItems > 0 && (
-              <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-brand-600 text-[10px] font-bold text-white">
+              <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#0F4CFF] text-[10px] font-bold text-white">
                 {totalItems}
               </span>
             )}
@@ -77,10 +81,10 @@ export default function Navbar() {
 
           {user ? (
             <div className="hidden items-center gap-2 md:flex">
-              <span className="text-sm font-medium text-ink-700">{user.name}</span>
+              <span className="text-sm font-medium text-gray-700">{user.name}</span>
               <button
                 onClick={logout}
-                className="rounded-lg p-2 text-ink-400 transition-colors hover:bg-ink-50 hover:text-ink-600"
+                className="rounded-lg p-2 text-gray-400 transition-colors hover:bg-gray-50 hover:text-gray-600"
                 title="Cerrar sesión"
               >
                 <LogOut className="h-4 w-4" />
@@ -89,7 +93,7 @@ export default function Navbar() {
           ) : (
             <Link
               to="/login"
-              className="hidden items-center gap-1.5 rounded-lg px-4 py-2 text-sm font-medium text-ink-600 transition-colors hover:bg-ink-50 hover:text-ink-900 md:flex"
+              className="hidden items-center gap-1.5 rounded-lg px-4 py-2 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-50 hover:text-[#111827] md:flex"
             >
               <User className="h-4 w-4" />
               Entrar
@@ -99,7 +103,7 @@ export default function Navbar() {
           {/* Mobile menu button */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="rounded-lg p-2 text-ink-600 md:hidden"
+            className="rounded-lg p-2 text-gray-600 md:hidden"
           >
             {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
@@ -108,7 +112,7 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {mobileOpen && (
-        <div className="border-t border-ink-100 bg-white px-4 py-4 md:hidden">
+        <div className="border-t border-gray-100 bg-white px-4 py-4 md:hidden">
           <div className="flex flex-col gap-1">
             {navLinks.map(link => (
               <Link
@@ -117,8 +121,8 @@ export default function Navbar() {
                 onClick={() => setMobileOpen(false)}
                 className={`rounded-lg px-4 py-3 text-sm font-medium ${
                   isActive(link.to)
-                    ? 'bg-brand-50 text-brand-700'
-                    : 'text-ink-600 hover:bg-ink-50'
+                    ? 'bg-[#0F4CFF]/10 text-[#0F4CFF]'
+                    : 'text-gray-600 hover:bg-gray-50'
                 }`}
               >
                 {link.label}
@@ -128,7 +132,7 @@ export default function Navbar() {
               <Link
                 to="/admin"
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-2 rounded-lg px-4 py-3 text-sm font-medium text-ink-600 hover:bg-ink-50"
+                className="flex items-center gap-2 rounded-lg px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-50"
               >
                 <Shield className="h-4 w-4" />
                 Panel Admin
@@ -138,7 +142,7 @@ export default function Navbar() {
               <Link
                 to="/login"
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-2 rounded-lg px-4 py-3 text-sm font-medium text-ink-600 hover:bg-ink-50"
+                className="flex items-center gap-2 rounded-lg px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-50"
               >
                 <User className="h-4 w-4" />
                 Iniciar Sesión
