@@ -1,4 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
+import { AuthProvider } from '@/context/AuthContext';
+import { OrderProvider } from '@/context/OrderContext';
+import { CartProvider } from '@/context/CartContext';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import HomePage from '@/pages/HomePage';
@@ -11,20 +14,26 @@ import AdminPage from '@/pages/AdminPage';
 
 export default function App() {
   return (
-    <div className="flex min-h-screen flex-col">
-      <Navbar />
-      <main className="flex-1">
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/catalogo" element={<CatalogPage />} />
-          <Route path="/producto/:id" element={<ProductDetailPage />} />
-          <Route path="/carrito" element={<CartPage />} />
-          <Route path="/pedidos" element={<OrdersPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/admin" element={<AdminPage />} />
-        </Routes>
-      </main>
-      <Footer />
-    </div>
+    <AuthProvider>        {/* ← PRIMERO: autenticación */}
+      <OrderProvider>     {/* ← SEGUNDO: depende de Auth */}
+        <CartProvider>    {/* ← TERCERO: depende de Auth y Order */}
+          <div className="flex min-h-screen flex-col">
+            <Navbar />
+            <main className="flex-1">
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/catalogo" element={<CatalogPage />} />
+                <Route path="/producto/:id" element={<ProductDetailPage />} />
+                <Route path="/carrito" element={<CartPage />} />
+                <Route path="/pedidos" element={<OrdersPage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/admin" element={<AdminPage />} />
+              </Routes>
+            </main>
+            <Footer />
+          </div>
+        </CartProvider>
+      </OrderProvider>
+    </AuthProvider>
   );
 }

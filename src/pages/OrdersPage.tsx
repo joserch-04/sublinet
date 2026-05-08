@@ -1,9 +1,12 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Package, Truck, CheckCircle, Clock, ChevronRight, ShoppingBag, Palette } from 'lucide-react';
+import { Package, Truck, CheckCircle, Clock, ChevronRight, ShoppingBag, Palette, LogIn } from 'lucide-react';
+import { useOrders } from '@/context/OrderContext';
+import { useAuth } from '@/context/AuthContext';
 import { formatPrice, getStatusColor, getStatusLabel } from '@/utils/helpers';
 import type { Order, CartItem } from '@/types';
 
+// ─── Datos demo SOLO para admin o usuarios sin pedidos ───
 const demoItems: CartItem[] = [
   {
     product: {
@@ -57,21 +60,12 @@ const demoOrders: Order[] = [
   },
   {
     id: 'ORD-2026-002',
-    items: [demoItems[0], demoItems[1]],
+    items: [...demoItems],
     status: 'shipped',
     total: 947,
     createdAt: '2026-04-28',
     estimatedDelivery: '2026-05-03',
     trackingNumber: 'SUB123456789',
-  },
-  {
-    id: 'ORD-2025-089',
-    items: [demoItems[1]],
-    status: 'delivered',
-    total: 349,
-    createdAt: '2025-12-15',
-    estimatedDelivery: '2025-12-20',
-    trackingNumber: 'SUB456789123',
   },
 ];
 
@@ -84,11 +78,55 @@ const statusSteps = [
 ];
 
 export default function OrdersPage() {
+  const { user } = useAuth();
+  const { orders: realOrders } = useOrders();
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
 
-  if (demoOrders.length === 0) {
+  // ─── Sin usuario autenticado ───
+  if (!user) {
     return (
-      <div className="flex min-h-[60vh] flex-col items-center justify-center">
+      <div className="flex min-h-[60vh] flex-col items-center justify-center animate-fade-in">
+        <LogIn className="h-16 w-16 text-gray-300" />
+        <h2 className="mt-4 text-2xl font-bold text-[#111827]">Inicia sesión para ver tus pedidos</h2>
+        <p className="mt-2 text-gray-500">Debes estar autenticado para acceder a tu historial</p>
+        <Link 
+          to="/login" 
+          className="mt-6 inline-flex items-center justify-center gap-2 rounded-xl bg-[#0F4CFF] px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-[#0F4CFF]/25 transition-all hover:bg-[#0d3fd9] hover:shadow-[#0F4CFF]/40 active:scale-95"
+        >
+          Iniciar sesión
+        </Link>
+      </div>
+    );
+  }
+
+  // ─── Admin: mostrar mensaje especial o panel de todos los pedidos ───
+  if (user.role === 'admin') {
+    return (
+      <div className="flex min-h-[60vh] flex-col items-center justify-center animate-fade-in">
+        <Package className="h-16 w-16 text-[#0F4CFF]" />
+        <h2 className="mt-4 text-2xl font-bold text-[#111827]">Panel de Administración</h2>
+        <p className="mt-2 text-gray-500">Desde aquí podrás gestionar todos los pedidos de los clientes</p>
+        <div className="mt-6 rounded-xl bg-gray-50 p-6 max-w-md">
+          <p className="text-sm text-gray-600">
+            <span className="font-semibold text-[#111827]">Funciones próximas:</span>
+          </p>
+          <ul className="mt-2 space-y-1 text-sm text-gray-500">
+            <li>• Ver todos los pedidos pendientes</li>
+            <li>• Actualizar estado de envíos</li>
+            <li>• Gestionar inventario de productos</li>
+            <li>• Ver estadísticas de ventas</li>
+          </ul>
+        </div>
+      </div>
+    );
+  }
+
+  // ─── Cliente: mostrar sus pedidos reales o demo si no tiene ───
+  const allOrders = realOrders.length > 0 ? realOrders : demoOrders;
+
+  if (allOrders.length === 0) {
+    return (
+      <div className="flex min-h-[60vh] flex-col items-center justify-center animate-fade-in">
         <ShoppingBag className="h-16 w-16 text-gray-300" />
         <h2 className="mt-4 text-2xl font-bold text-[#111827]">Aún no tienes pedidos</h2>
         <p className="mt-2 text-gray-500">Cuando hagas tu primera compra, aparecerá aquí</p>
@@ -106,12 +144,12 @@ export default function OrdersPage() {
     <div className="animate-fade-in">
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <h1 className="text-3xl font-bold tracking-tight text-[#111827]">Mis pedidos</h1>
-        <p className="mt-1 text-gray-500">Seguimiento de todos tus pedidos SubliNet</p>
+        <p className="mt-1 text-gray-500">Hola {user.name}, aquí está tu historial de compras</p>
 
         <div className="mt-8 grid gap-6 lg:grid-cols-3">
-          {/* Orders List */}
+          {/* ─── Orders List ─── */}
           <div className="space-y-3 lg:col-span-1">
-            {demoOrders.map(order => (
+            {allOrders.map(order => (
               <button
                 key={order.id}
                 onClick={() => setSelectedOrder(order)}
@@ -138,10 +176,11 @@ export default function OrdersPage() {
             ))}
           </div>
 
-          {/* Order Detail */}
+          {/* ─── Order Detail ─── */}
           <div className="lg:col-span-2">
             {selectedOrder ? (
               <div className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-100">
+                {/* Header */}
                 <div className="flex items-center justify-between">
                   <div>
                     <h2 className="text-xl font-bold text-[#111827]">{selectedOrder.id}</h2>
@@ -154,13 +193,13 @@ export default function OrdersPage() {
                   </span>
                 </div>
 
-                {/* Products List */}
+                {/* ─── Products List with Design Preview ─── */}
                 <div className="mt-6 space-y-4">
                   <h3 className="text-sm font-semibold text-[#111827]">Productos</h3>
                   {selectedOrder.items.map((item, idx) => (
                     <div key={idx} className="flex gap-4 rounded-xl border border-gray-100 p-3">
-                      {/* Product Preview with Design */}
-                      <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg bg-gray-100">
+                      {/* Product Preview with Design Overlay */}
+                      <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-lg bg-gray-100">
                         <img
                           src={item.product.image}
                           alt={item.product.name}
@@ -172,7 +211,7 @@ export default function OrdersPage() {
                             style={{
                               left: `${item.designPosition.x}%`,
                               top: `${item.designPosition.y}%`,
-                              transform: `translate(-50%, -50%) scale(${item.designPosition.scale * 0.3})`,
+                              transform: `translate(-50%, -50%) scale(${item.designPosition.scale * 0.35})`,
                             }}
                           >
                             <img
@@ -222,7 +261,6 @@ export default function OrdersPage() {
                   <h3 className="text-sm font-semibold text-[#111827]">Estado del envío</h3>
                   <div className="mt-4">
                     <div className="relative">
-                      {/* Progress bar */}
                       <div className="absolute left-0 top-4 h-1 w-full rounded-full bg-gray-100">
                         <div
                           className="h-full rounded-full bg-[#0F4CFF] transition-all"
@@ -231,7 +269,6 @@ export default function OrdersPage() {
                           }}
                         />
                       </div>
-                      {/* Steps */}
                       <div className="relative flex justify-between">
                         {statusSteps.map((step, idx) => {
                           const currentIdx = statusSteps.findIndex(s => s.status === selectedOrder.status);

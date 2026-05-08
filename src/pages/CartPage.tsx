@@ -2,10 +2,12 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Trash2, Minus, Plus, ShoppingBag, ArrowRight, Package } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
+import { useOrders } from '@/context/OrderContext';
 import { formatPrice } from '@/utils/helpers';
 
 export default function CartPage() {
   const { items, removeItem, updateQuantity, totalPrice, clearCart } = useCart();
+  const { addOrder } = useOrders();
   const navigate = useNavigate();
   const [showCheckout, setShowCheckout] = useState(false);
 
@@ -30,6 +32,13 @@ export default function CartPage() {
   const shipping = totalPrice > 500 ? 0 : 99;
   const total = totalPrice + shipping;
 
+  const handleSuccess = () => {
+    // GUARDAR EL PEDIDO ANTES DE LIMPIAR EL CARRITO
+    addOrder(items, total, shipping);
+    clearCart();
+    navigate('/pedidos');
+  };
+
   return (
     <div className="animate-fade-in">
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -42,20 +51,19 @@ export default function CartPage() {
             {items.map((item, idx) => (
               <div key={`${item.product.id}-${idx}`} className="flex gap-4 rounded-2xl border border-gray-100 bg-white p-4 shadow-sm">
                 {/* Product Preview with Design Overlay */}
-                <div className="h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-gray-100 relative">
+                <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-gray-100">
                   <img
                     src={item.product.image}
                     alt={item.product.name}
                     className="h-full w-full object-cover"
                   />
-                  {/* Design overlay if exists */}
                   {item.designUrl && item.designPosition && (
                     <div
                       className="absolute pointer-events-none"
                       style={{
                         left: `${item.designPosition.x}%`,
                         top: `${item.designPosition.y}%`,
-                        transform: `translate(-50%, -50%) scale(${item.designPosition.scale * 0.4})`, // 0.4 to fit in small preview
+                        transform: `translate(-50%, -50%) scale(${item.designPosition.scale * 0.4})`,
                       }}
                     >
                       <img
@@ -65,7 +73,6 @@ export default function CartPage() {
                       />
                     </div>
                   )}
-                  {/* Design indicator dot if design exists but no position */}
                   {item.designUrl && !item.designPosition && (
                     <div className="absolute top-1 right-1 h-3 w-3 rounded-full bg-[#0F4CFF] border-2 border-white" />
                   )}
@@ -172,10 +179,7 @@ export default function CartPage() {
         <CheckoutModal
           total={total}
           onClose={() => setShowCheckout(false)}
-          onSuccess={() => {
-            clearCart();
-            navigate('/pedidos');
-          }}
+          onSuccess={handleSuccess}
         />
       )}
     </div>
