@@ -48,4 +48,19 @@ export interface User {
   avatar?: string;
 }
 
+export interface DesignPosition {
+  x: number;
+  y: number;
+  scale: number;
+}
+
+export interface CartItem {
+  product: Product;
+  quantity: number;
+  designUrl: string | null;
+  selectedColor: string;
+  selectedSize?: string;
+  designPosition?: DesignPosition;
+}
+
 export type OrderStatus = Order['status'];

@@ -25,7 +25,7 @@ const recentOrders = [
 ];
 
 export default function AdminPage() {
-  const { user, isAdmin } = useAuth();
+  const { isAdmin } = useAuth();
   const [activeTab, setActiveTab] = useState<'dashboard' | 'orders' | 'partners'>('dashboard');
 
   if (!isAdmin) {

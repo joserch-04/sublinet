@@ -31,7 +31,7 @@ export function OrderProvider({ children }: { children: ReactNode }) {
     }
   }, [orders, user]);
 
-  const addOrder = useCallback((items: CartItem[], total: number, shipping: number) => {
+  const addOrder = useCallback((items: CartItem[], total: number) => {
     if (!user) throw new Error('Debes iniciar sesión para crear un pedido');
 
     const now = new Date();
