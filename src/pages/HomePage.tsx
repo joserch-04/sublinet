@@ -9,7 +9,6 @@ import {
   Zap,
   Star,
   Shirt,
-  ShoppingBag,
   BadgeCheck,
   ChevronDown,
   MousePointerClick,
@@ -344,7 +343,7 @@ export default function HomePage() {
                 { value: 1000, suffix: '+', label: 'Productos sublimados' },
                 { value: 49, suffix: '', label: 'Valoración clientes', prefix: '4.' },
                 { value: 24, suffix: 'h', label: 'Producción rápida' },
-              ].map((stat, i) => (
+              ].map((stat, _) => (
                 <div key={stat.label} className="group cursor-default">
                   <h3 className="text-3xl font-black text-white group-hover:text-[#00D084] transition-colors">
                     {stat.prefix}
@@ -512,7 +511,7 @@ export default function HomePage() {
                 step: '03',
                 color: '#0F4CFF',
               },
-            ].map((item, i) => (
+            ].map((item, _) => (
               <TiltCard key={item.step}>
                 <div className="group relative overflow-hidden rounded-3xl border border-gray-100 bg-white p-8 shadow-sm transition-all duration-500 hover:shadow-2xl hover:border-transparent">
                   {/* Fondo gradiente en hover */}
@@ -631,7 +630,7 @@ export default function HomePage() {
                 title: 'Tecnología HD',
                 desc: 'Colores vibrantes y acabados profesionales premium.',
               },
-            ].map((item, i) => (
+            ].map((item, _) => (
               <div
                 key={item.title}
                 className="group relative rounded-3xl border border-gray-100 bg-[#f7faff] p-6 transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl hover:border-[#0F4CFF]/20 hover:bg-white"
