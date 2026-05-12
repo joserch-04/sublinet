@@ -1,9 +1,9 @@
 {
   "name": "sublinet",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
-  "homepage": "https://joserch-04.github.io/sublinet",
+  "homepage": "...",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
