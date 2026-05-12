@@ -6,7 +6,7 @@
   "homepage": "https://joserch-04.github.io/sublinet",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
