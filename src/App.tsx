@@ -11,6 +11,7 @@ import CartPage from '@/pages/CartPage';
 import OrdersPage from '@/pages/OrdersPage';
 import LoginPage from '@/pages/LoginPage';
 import AdminPage from '@/pages/AdminPage';
+import RegisterPage from '@/pages/RegisterPage';
 
 export default function App() {
   return (
@@ -28,6 +29,7 @@ export default function App() {
                 <Route path="/pedidos" element={<OrdersPage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/admin" element={<AdminPage />} />
+                <Route path="/register" element={<RegisterPage />} />
               </Routes>
             </main>
             <Footer />

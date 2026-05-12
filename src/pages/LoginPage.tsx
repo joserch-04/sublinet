@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { LogIn, Eye, EyeOff, AlertCircle } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 
@@ -86,12 +86,14 @@ export default function LoginPage() {
           </button>
         </form>
 
-
         <p className="mt-6 text-center text-sm text-gray-500">
           ¿No tienes cuenta?{' '}
-          <span className="font-medium text-[#0F4CFF] hover:text-[#0d3fd9] cursor-pointer transition-colors">
+          <Link 
+            to="/register" 
+            className="font-medium text-[#0F4CFF] hover:text-[#0d3fd9] cursor-pointer transition-colors"
+          >
             Regístrate
-          </span>
+          </Link>
         </p>
       </div>
     </div>

@@ -4,6 +4,12 @@ import { Trash2, Minus, Plus, ShoppingBag, ArrowRight, Package } from 'lucide-re
 import { useCart } from '@/context/CartContext';
 import { useOrders } from '@/context/OrderContext';
 import { formatPrice } from '@/utils/helpers';
+import {
+  CreditCard,
+  Landmark,
+  Wallet,
+  BadgeDollarSign,
+} from 'lucide-react';
 
 export default function CartPage() {
   const { items, removeItem, updateQuantity, totalPrice, clearCart } = useCart();
@@ -188,7 +194,14 @@ export default function CartPage() {
 
 function CheckoutModal({ total, onClose, onSuccess }: { total: number; onClose: () => void; onSuccess: () => void }) {
   const [step, setStep] = useState<'form' | 'processing' | 'success'>('form');
-  const [formData, setFormData] = useState({ name: '', email: '', address: '', city: '', zip: '' });
+const [formData, setFormData] = useState({
+  name: '',
+  email: '',
+  address: '',
+  city: '',
+  zip: '',
+  paymentMethod: 'card',
+});
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -243,27 +256,219 @@ function CheckoutModal({ total, onClose, onSuccess }: { total: number; onClose: 
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
               <label className="mb-1 block text-sm font-medium text-gray-700">Nombre completo</label>
-              <input required className="w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-[#111827] placeholder-gray-400 outline-none transition-all focus:border-[#0F4CFF] focus:ring-2 focus:ring-[#0F4CFF]/20" placeholder="Juan Pérez" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} />
+              <input required className="w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-[#111827] placeholder-gray-400 outline-none transition-all focus:border-[#0F4CFF] focus:ring-2 focus:ring-[#0F4CFF]/20" placeholder="Jose Gutierrez" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} />
             </div>
             <div>
               <label className="mb-1 block text-sm font-medium text-gray-700">Correo electrónico</label>
-              <input required type="email" className="w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-[#111827] placeholder-gray-400 outline-none transition-all focus:border-[#0F4CFF] focus:ring-2 focus:ring-[#0F4CFF]/20" placeholder="juan@email.com" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} />
+              <input required type="email" className="w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-[#111827] placeholder-gray-400 outline-none transition-all focus:border-[#0F4CFF] focus:ring-2 focus:ring-[#0F4CFF]/20" placeholder="josegut@email.com" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} />
             </div>
           </div>
           <div>
             <label className="mb-1 block text-sm font-medium text-gray-700">Dirección</label>
-            <input required className="w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-[#111827] placeholder-gray-400 outline-none transition-all focus:border-[#0F4CFF] focus:ring-2 focus:ring-[#0F4CFF]/20" placeholder="Calle, número, colonia" value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} />
+            <input required className="w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-[#111827] placeholder-gray-400 outline-none transition-all focus:border-[#0F4CFF] focus:ring-2 focus:ring-[#0F4CFF]/20" placeholder="Calle, número, Reparto" value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} />
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
               <label className="mb-1 block text-sm font-medium text-gray-700">Ciudad</label>
-              <input required className="w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-[#111827] placeholder-gray-400 outline-none transition-all focus:border-[#0F4CFF] focus:ring-2 focus:ring-[#0F4CFF]/20" placeholder="Ciudad de México" value={formData.city} onChange={e => setFormData({...formData, city: e.target.value})} />
-            </div>
-            <div>
-              <label className="mb-1 block text-sm font-medium text-gray-700">Código postal</label>
-              <input required className="w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-[#111827] placeholder-gray-400 outline-none transition-all focus:border-[#0F4CFF] focus:ring-2 focus:ring-[#0F4CFF]/20" placeholder="01000" value={formData.zip} onChange={e => setFormData({...formData, zip: e.target.value})} />
+              <input required className="w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-[#111827] placeholder-gray-400 outline-none transition-all focus:border-[#0F4CFF] focus:ring-2 focus:ring-[#0F4CFF]/20" placeholder="Leon" value={formData.city} onChange={e => setFormData({...formData, city: e.target.value})} />
             </div>
           </div>
+
+        {/* Métodos de pago */}
+<div>
+  <label className="mb-3 block text-sm font-medium text-gray-700">
+    Método de pago
+  </label>
+
+  <div className="grid gap-3 sm:grid-cols-2">
+
+    {/* Tarjeta */}
+    <button
+      type="button"
+      onClick={() =>
+        setFormData({ ...formData, paymentMethod: 'card' })
+      }
+      className={`flex items-center gap-3 rounded-2xl border p-4 transition-all ${
+        formData.paymentMethod === 'card'
+          ? 'border-[#0F4CFF] bg-[#0F4CFF]/5 shadow-md'
+          : 'border-gray-200 hover:border-[#0F4CFF]/30'
+      }`}
+    >
+      <div className="rounded-xl bg-[#0F4CFF]/10 p-2">
+        <CreditCard className="h-5 w-5 text-[#0F4CFF]" />
+      </div>
+
+      <div className="text-left">
+        <p className="text-sm font-semibold text-[#111827]">
+          Tarjeta
+        </p>
+
+        <p className="text-xs text-gray-500">
+          Visa / Mastercard
+        </p>
+      </div>
+    </button>
+
+    {/* Transferencia */}
+    <button
+      type="button"
+      onClick={() =>
+        setFormData({ ...formData, paymentMethod: 'bank' })
+      }
+      className={`flex items-center gap-3 rounded-2xl border p-4 transition-all ${
+        formData.paymentMethod === 'bank'
+          ? 'border-[#0F4CFF] bg-[#0F4CFF]/5 shadow-md'
+          : 'border-gray-200 hover:border-[#0F4CFF]/30'
+      }`}
+    >
+      <div className="rounded-xl bg-[#00D084]/10 p-2">
+        <Landmark className="h-5 w-5 text-[#00D084]" />
+      </div>
+
+      <div className="text-left">
+        <p className="text-sm font-semibold text-[#111827]">
+          Transferencia
+        </p>
+
+        <p className="text-xs text-gray-500">
+          Banco nacional
+        </p>
+      </div>
+    </button>
+
+    {/* PayPal */}
+    <button
+      type="button"
+      onClick={() =>
+        setFormData({ ...formData, paymentMethod: 'paypal' })
+      }
+      className={`flex items-center gap-3 rounded-2xl border p-4 transition-all ${
+        formData.paymentMethod === 'paypal'
+          ? 'border-[#0F4CFF] bg-[#0F4CFF]/5 shadow-md'
+          : 'border-gray-200 hover:border-[#0F4CFF]/30'
+      }`}
+    >
+      <div className="rounded-xl bg-blue-100 p-2">
+        <Wallet className="h-5 w-5 text-blue-600" />
+      </div>
+
+      <div className="text-left">
+        <p className="text-sm font-semibold text-[#111827]">
+          PayPal
+        </p>
+
+        <p className="text-xs text-gray-500">
+          Pago seguro online
+        </p>
+      </div>
+    </button>
+
+    {/* Efectivo */}
+    <button
+      type="button"
+      onClick={() =>
+        setFormData({ ...formData, paymentMethod: 'cash' })
+      }
+      className={`flex items-center gap-3 rounded-2xl border p-4 transition-all ${
+        formData.paymentMethod === 'cash'
+          ? 'border-[#0F4CFF] bg-[#0F4CFF]/5 shadow-md'
+          : 'border-gray-200 hover:border-[#0F4CFF]/30'
+      }`}
+    >
+      <div className="rounded-xl bg-yellow-100 p-2">
+        <BadgeDollarSign className="h-5 w-5 text-yellow-600" />
+      </div>
+
+      <div className="text-left">
+        <p className="text-sm font-semibold text-[#111827]">
+          Pago contra entrega
+        </p>
+
+        <p className="text-xs text-gray-500">
+          Efectivo al recibir
+        </p>
+      </div>
+    </button>
+  </div>
+</div>
+
+{/* CONTENIDO DINÁMICO SEGÚN MÉTODO */}
+<div className="mt-4">
+
+  {/* TARJETA */}
+  {formData.paymentMethod === 'card' && (
+    <div className="space-y-4 rounded-2xl border border-[#0F4CFF]/20 bg-[#0F4CFF]/5 p-5">
+
+      <h3 className="text-sm font-bold text-[#111827]">
+        Información de tarjeta
+      </h3>
+
+      <input
+        type="text"
+        placeholder="Número de tarjeta"
+        className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-[#0F4CFF] focus:ring-2 focus:ring-[#0F4CFF]/20"
+      />
+
+      <div className="grid grid-cols-2 gap-4">
+        <input
+          type="text"
+          placeholder="MM/YY"
+          className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-[#0F4CFF] focus:ring-2 focus:ring-[#0F4CFF]/20"
+        />
+
+        <input
+          type="text"
+          placeholder="CVV"
+          className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-[#0F4CFF] focus:ring-2 focus:ring-[#0F4CFF]/20"
+        />
+      </div>
+    </div>
+  )}
+
+  {/* TRANSFERENCIA */}
+  {formData.paymentMethod === 'bank' && (
+    <div className="rounded-2xl border border-[#00D084]/20 bg-[#00D084]/5 p-5">
+      <h3 className="text-sm font-bold text-[#111827]">
+        Transferencia bancaria
+      </h3>
+
+      <div className="mt-3 space-y-2 text-sm text-gray-600">
+        <p><span className="font-semibold">Banco:</span> BAC</p>
+        <p><span className="font-semibold">Cuenta:</span> 123456789</p>
+        <p><span className="font-semibold">Titular:</span> SubliNet Nicaragua</p>
+      </div>
+    </div>
+  )}
+
+  {/* PAYPAL */}
+  {formData.paymentMethod === 'paypal' && (
+    <div className="rounded-2xl border border-blue-200 bg-blue-50 p-5 text-center">
+      <p className="text-sm font-medium text-gray-700">
+        Serás redirigido a PayPal para completar el pago.
+      </p>
+
+      <button
+        type="button"
+        className="mt-4 rounded-xl bg-blue-600 px-6 py-3 text-sm font-bold text-white transition-all hover:scale-105"
+      >
+        Continuar con PayPal
+      </button>
+    </div>
+  )}
+
+  {/* EFECTIVO */}
+  {formData.paymentMethod === 'cash' && (
+    <div className="rounded-2xl border border-yellow-200 bg-yellow-50 p-5">
+      <h3 className="text-sm font-bold text-[#111827]">
+        Pago contra entrega
+      </h3>
+
+      <p className="mt-2 text-sm text-gray-600">
+        Pagarás en efectivo al recibir tu pedido.
+      </p>
+    </div>
+  )}
+</div>
 
           <div className="rounded-xl bg-gray-50 p-4">
             <div className="flex justify-between text-sm">
@@ -282,4 +487,6 @@ function CheckoutModal({ total, onClose, onSuccess }: { total: number; onClose: 
       </div>
     </div>
   );
+
+  
 }
