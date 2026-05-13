@@ -275,11 +275,7 @@ function CheckoutModal({ total, onClose, onSuccess }: { total: number; onClose: 
               <label className="mb-1 block text-sm font-medium text-gray-700">Ciudad</label>
               <input required className="w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-[#111827] placeholder-gray-400 outline-none transition-all focus:border-[#0F4CFF] focus:ring-2 focus:ring-[#0F4CFF]/20" placeholder="Leon" value={formData.city} onChange={e => setFormData({...formData, city: e.target.value})} />
             </div>
-            {/* CORRECCIÓN 2: Agregué el campo ZIP que faltaba */}
-            <div>
-              <label className="mb-1 block text-sm font-medium text-gray-700">Código postal</label>
-              <input required className="w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-[#111827] placeholder-gray-400 outline-none transition-all focus:border-[#0F4CFF] focus:ring-2 focus:ring-[#0F4CFF]/20" placeholder="21000" value={formData.zip} onChange={e => setFormData({...formData, zip: e.target.value})} />
-            </div>
+      
           </div>
 
           {/* Métodos de pago */}
@@ -288,7 +284,6 @@ function CheckoutModal({ total, onClose, onSuccess }: { total: number; onClose: 
               Método de pago
             </label>
 
-            {/* CORRECCIÓN 3: grid-cols-2 en móvil, sm:grid-cols-2 se mantiene */}
             <div className="grid grid-cols-2 gap-2 sm:gap-3">
 
               {/* Tarjeta */}

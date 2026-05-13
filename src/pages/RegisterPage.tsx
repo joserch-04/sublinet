@@ -82,7 +82,7 @@ export default function RegisterPage() {
               type="text"
               required
               className="w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-[#111827] placeholder-gray-400 outline-none transition-all focus:border-[#0F4CFF] focus:ring-2 focus:ring-[#0F4CFF]/20"
-              placeholder="Juan Pérez"
+              placeholder="Tu nombre"
               value={name}
               onChange={e => setName(e.target.value)}
             />
