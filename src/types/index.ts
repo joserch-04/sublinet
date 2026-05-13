@@ -3,7 +3,7 @@ export interface Product {
   name: string;
   category: string;
   description: string;
-  basePrice: number;
+  basePrice: number;      
   image: string;
   colors: string[];
   sizes?: string[];
@@ -12,12 +12,19 @@ export interface Product {
   popular?: boolean;
 }
 
+export interface DesignPosition {
+  x: number;
+  y: number;
+  scale: number;
+}
+
 export interface CartItem {
   product: Product;
   quantity: number;
   designUrl: string | null;
   selectedColor: string;
   selectedSize?: string;
+  designPosition?: DesignPosition;
 }
 
 export interface Order {
@@ -46,21 +53,6 @@ export interface User {
   email: string;
   role: 'customer' | 'admin';
   avatar?: string;
-}
-
-export interface DesignPosition {
-  x: number;
-  y: number;
-  scale: number;
-}
-
-export interface CartItem {
-  product: Product;
-  quantity: number;
-  designUrl: string | null;
-  selectedColor: string;
-  selectedSize?: string;
-  designPosition?: DesignPosition;
 }
 
 export type OrderStatus = Order['status'];

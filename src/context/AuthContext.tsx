@@ -12,7 +12,7 @@ interface User {
 interface AuthContextType {
   user: User | null;
   login: (email: string, password: string) => boolean;
-  register: (name: string, email: string, password: string) => boolean;  // ← AÑADIDO
+  register: (name: string, email: string, password: string) => boolean;
   logout: () => void;
   isAdmin: boolean;
 }
@@ -51,16 +51,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const { password: _, ...userData } = found;
       setUser(userData);
       localStorage.setItem('sublinet_user', JSON.stringify(userData));
+      // ← GUARDAR NOMBRE DEL USUARIO PARA QUE EL ADMIN LO LEA
+      localStorage.setItem(`sublinet_user_${found.email}`, JSON.stringify({ 
+        name: found.name, 
+        email: found.email, 
+        role: found.role 
+      }));
       return true;
     }
     return false;
   }, []);
 
-  // ← REGISTER DENTRO DEL PROVIDER (corregido)
+  // ← REGISTER CON AUTO-LOGIN Y GUARDADO DE NOMBRE
   const register = useCallback((name: string, email: string, password: string): boolean => {
     const registeredUsers = JSON.parse(localStorage.getItem('sublinet_registered_users') || '[]');
     
-    // Verificar si el email ya existe (en predefinidos o registrados)
+    // Verificar si el email ya existe
     const existsInPredefined = USERS.some(u => u.email === email);
     const existsInRegistered = registeredUsers.some((u: any) => u.email === email);
     
@@ -73,14 +79,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       name, 
       email, 
       password,
-      role: 'client' as const  // ← Todos los registrados son clientes
+      role: 'client' as const
     };
     
     registeredUsers.push(newUser);
     localStorage.setItem('sublinet_registered_users', JSON.stringify(registeredUsers));
     
-    // Auto-login después de registrar
-
+    // ← AUTO-LOGIN: iniciar sesión automáticamente después de registrar
+    const { password: _, ...userData } = newUser;
+    setUser(userData);
+    localStorage.setItem('sublinet_user', JSON.stringify(userData));
+    
+    // ← GUARDAR NOMBRE DEL USUARIO PARA QUE EL ADMIN LO LEA
+    localStorage.setItem(`sublinet_user_${email}`, JSON.stringify({ 
+      name, 
+      email, 
+      role: 'client' 
+    }));
     
     return true;
   }, []);
@@ -95,7 +110,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       value={{ 
         user, 
         login, 
-        register,   // ← AÑADIDO AL VALUE
+        register,
         logout, 
         isAdmin: user?.role === 'admin' 
       }}
