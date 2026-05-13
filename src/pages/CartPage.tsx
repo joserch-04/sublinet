@@ -35,7 +35,7 @@ export default function CartPage() {
     );
   }
 
-  const shipping = totalPrice > 500 ? 0 : 99;
+  const shipping = totalPrice > 1000 ? 0 : 99;
   const total = totalPrice + shipping;
 
   const handleSuccess = () => {
@@ -155,7 +155,7 @@ export default function CartPage() {
                 </span>
               </div>
               {shipping === 0 && (
-                <p className="text-xs text-[#00D084]">¡Envío gratis por compras mayores a $500!</p>
+                <p className="text-xs text-[#00D084]">¡Envío gratis por compras mayores a C$1000!</p>
               )}
               <div className="border-t border-gray-100 pt-3">
                 <div className="flex justify-between">
