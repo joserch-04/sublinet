@@ -12,7 +12,7 @@ export default function Footer() {
     
     {/* Logo */}
     <img
-      src="public/images/SUBLINET_LOGO.png"
+      src="/images/SUBLINET_LOGO.png"
       alt="SUBLINET Logo"
       className="h-12 w-12 rounded-xl object-contain shadow-md"
     />

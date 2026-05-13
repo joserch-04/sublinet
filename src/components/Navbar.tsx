@@ -25,7 +25,7 @@ export default function Navbar() {
        {/* Logo */}
       <Link to="/" className="flex items-center gap-3">
         <img
-         src="public/images/SUBLINET_LOGO.png"
+         src="/images/SUBLINET_LOGO.png"
          alt="SubliNet Logo"
        className="h-12 w-auto object-contain"
         />
