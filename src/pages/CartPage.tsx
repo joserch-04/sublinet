@@ -192,16 +192,18 @@ export default function CartPage() {
   );
 }
 
+// ... (todo el código anterior igual hasta el CheckoutModal)
+
 function CheckoutModal({ total, onClose, onSuccess }: { total: number; onClose: () => void; onSuccess: () => void }) {
   const [step, setStep] = useState<'form' | 'processing' | 'success'>('form');
-const [formData, setFormData] = useState({
-  name: '',
-  email: '',
-  address: '',
-  city: '',
-  zip: '',
-  paymentMethod: 'card',
-});
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    address: '',
+    city: '',
+    zip: '',
+    paymentMethod: 'card',
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -212,11 +214,11 @@ const [formData, setFormData] = useState({
   if (step === 'success') {
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
-        <div className="w-full max-w-md rounded-2xl bg-white p-8 text-center animate-slide-up">
+        <div className="w-full max-w-md rounded-2xl bg-white p-6 sm:p-8 text-center animate-slide-up mx-4">
           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#00D084]/10">
             <Package className="h-8 w-8 text-[#00D084]" />
           </div>
-          <h2 className="mt-4 text-2xl font-bold text-[#111827]">¡Pedido confirmado!</h2>
+          <h2 className="mt-4 text-xl sm:text-2xl font-bold text-[#111827]">¡Pedido confirmado!</h2>
           <p className="mt-2 text-sm text-gray-500">
             Tu pedido ha sido recibido y está siendo asignado a nuestro equipo de sublimación.
             Recibirás un correo con los detalles de seguimiento.
@@ -235,7 +237,7 @@ const [formData, setFormData] = useState({
   if (step === 'processing') {
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
-        <div className="w-full max-w-md rounded-2xl bg-white p-8 text-center">
+        <div className="w-full max-w-md rounded-2xl bg-white p-6 sm:p-8 text-center mx-4">
           <div className="mx-auto h-12 w-12 animate-spin rounded-full border-4 border-[#0F4CFF]/20 border-t-[#0F4CFF]" />
           <p className="mt-4 font-medium text-gray-700">Procesando tu pedido...</p>
           <p className="text-sm text-gray-500">Conectando con nuestros socios de sublimación</p>
@@ -245,15 +247,16 @@ const [formData, setFormData] = useState({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
-      <div className="w-full max-w-lg rounded-2xl bg-white p-6 animate-slide-up">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-2 sm:p-4 backdrop-blur-sm">
+      {/* CORRECCIÓN 1: w-full + max-w-lg + max-h-[90vh] + overflow-y-auto */}
+      <div className="w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl bg-white p-4 sm:p-6 animate-slide-up mx-2 sm:mx-0">
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-bold text-[#111827]">Finalizar compra</h2>
+          <h2 className="text-lg sm:text-xl font-bold text-[#111827]">Finalizar compra</h2>
           <button onClick={onClose} className="rounded-lg p-1 text-gray-400 hover:bg-gray-50">✕</button>
         </div>
 
         <form onSubmit={handleSubmit} className="mt-4 space-y-4">
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-4 grid-cols-1 sm:grid-cols-2">
             <div>
               <label className="mb-1 block text-sm font-medium text-gray-700">Nombre completo</label>
               <input required className="w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-[#111827] placeholder-gray-400 outline-none transition-all focus:border-[#0F4CFF] focus:ring-2 focus:ring-[#0F4CFF]/20" placeholder="Jose Gutierrez" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} />
@@ -267,208 +270,215 @@ const [formData, setFormData] = useState({
             <label className="mb-1 block text-sm font-medium text-gray-700">Dirección</label>
             <input required className="w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-[#111827] placeholder-gray-400 outline-none transition-all focus:border-[#0F4CFF] focus:ring-2 focus:ring-[#0F4CFF]/20" placeholder="Calle, número, Reparto" value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} />
           </div>
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-4 grid-cols-1 sm:grid-cols-2">
             <div>
               <label className="mb-1 block text-sm font-medium text-gray-700">Ciudad</label>
               <input required className="w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-[#111827] placeholder-gray-400 outline-none transition-all focus:border-[#0F4CFF] focus:ring-2 focus:ring-[#0F4CFF]/20" placeholder="Leon" value={formData.city} onChange={e => setFormData({...formData, city: e.target.value})} />
             </div>
+            {/* CORRECCIÓN 2: Agregué el campo ZIP que faltaba */}
+            <div>
+              <label className="mb-1 block text-sm font-medium text-gray-700">Código postal</label>
+              <input required className="w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-[#111827] placeholder-gray-400 outline-none transition-all focus:border-[#0F4CFF] focus:ring-2 focus:ring-[#0F4CFF]/20" placeholder="21000" value={formData.zip} onChange={e => setFormData({...formData, zip: e.target.value})} />
+            </div>
           </div>
 
-        {/* Métodos de pago */}
-<div>
-  <label className="mb-3 block text-sm font-medium text-gray-700">
-    Método de pago
-  </label>
+          {/* Métodos de pago */}
+          <div>
+            <label className="mb-3 block text-sm font-medium text-gray-700">
+              Método de pago
+            </label>
 
-  <div className="grid gap-3 sm:grid-cols-2">
+            {/* CORRECCIÓN 3: grid-cols-2 en móvil, sm:grid-cols-2 se mantiene */}
+            <div className="grid grid-cols-2 gap-2 sm:gap-3">
 
-    {/* Tarjeta */}
-    <button
-      type="button"
-      onClick={() =>
-        setFormData({ ...formData, paymentMethod: 'card' })
-      }
-      className={`flex items-center gap-3 rounded-2xl border p-4 transition-all ${
-        formData.paymentMethod === 'card'
-          ? 'border-[#0F4CFF] bg-[#0F4CFF]/5 shadow-md'
-          : 'border-gray-200 hover:border-[#0F4CFF]/30'
-      }`}
-    >
-      <div className="rounded-xl bg-[#0F4CFF]/10 p-2">
-        <CreditCard className="h-5 w-5 text-[#0F4CFF]" />
-      </div>
+              {/* Tarjeta */}
+              <button
+                type="button"
+                onClick={() =>
+                  setFormData({ ...formData, paymentMethod: 'card' })
+                }
+                className={`flex items-center gap-2 sm:gap-3 rounded-xl sm:rounded-2xl border p-3 sm:p-4 transition-all ${
+                  formData.paymentMethod === 'card'
+                    ? 'border-[#0F4CFF] bg-[#0F4CFF]/5 shadow-md'
+                    : 'border-gray-200 hover:border-[#0F4CFF]/30'
+                }`}
+              >
+                <div className="rounded-lg sm:rounded-xl bg-[#0F4CFF]/10 p-1.5 sm:p-2">
+                  <CreditCard className="h-4 w-4 sm:h-5 sm:w-5 text-[#0F4CFF]" />
+                </div>
 
-      <div className="text-left">
-        <p className="text-sm font-semibold text-[#111827]">
-          Tarjeta
-        </p>
+                <div className="text-left">
+                  <p className="text-xs sm:text-sm font-semibold text-[#111827]">
+                    Tarjeta
+                  </p>
 
-        <p className="text-xs text-gray-500">
-          Visa / Mastercard
-        </p>
-      </div>
-    </button>
+                  <p className="hidden sm:block text-xs text-gray-500">
+                    Visa / Mastercard
+                  </p>
+                </div>
+              </button>
 
-    {/* Transferencia */}
-    <button
-      type="button"
-      onClick={() =>
-        setFormData({ ...formData, paymentMethod: 'bank' })
-      }
-      className={`flex items-center gap-3 rounded-2xl border p-4 transition-all ${
-        formData.paymentMethod === 'bank'
-          ? 'border-[#0F4CFF] bg-[#0F4CFF]/5 shadow-md'
-          : 'border-gray-200 hover:border-[#0F4CFF]/30'
-      }`}
-    >
-      <div className="rounded-xl bg-[#00D084]/10 p-2">
-        <Landmark className="h-5 w-5 text-[#00D084]" />
-      </div>
+              {/* Transferencia */}
+              <button
+                type="button"
+                onClick={() =>
+                  setFormData({ ...formData, paymentMethod: 'bank' })
+                }
+                className={`flex items-center gap-2 sm:gap-3 rounded-xl sm:rounded-2xl border p-3 sm:p-4 transition-all ${
+                  formData.paymentMethod === 'bank'
+                    ? 'border-[#0F4CFF] bg-[#0F4CFF]/5 shadow-md'
+                    : 'border-gray-200 hover:border-[#0F4CFF]/30'
+                }`}
+              >
+                <div className="rounded-lg sm:rounded-xl bg-[#00D084]/10 p-1.5 sm:p-2">
+                  <Landmark className="h-4 w-4 sm:h-5 sm:w-5 text-[#00D084]" />
+                </div>
 
-      <div className="text-left">
-        <p className="text-sm font-semibold text-[#111827]">
-          Transferencia
-        </p>
+                <div className="text-left">
+                  <p className="text-xs sm:text-sm font-semibold text-[#111827]">
+                    Transferencia
+                  </p>
 
-        <p className="text-xs text-gray-500">
-          Banco nacional
-        </p>
-      </div>
-    </button>
+                  <p className="hidden sm:block text-xs text-gray-500">
+                    Banco nacional
+                  </p>
+                </div>
+              </button>
 
-    {/* PayPal */}
-    <button
-      type="button"
-      onClick={() =>
-        setFormData({ ...formData, paymentMethod: 'paypal' })
-      }
-      className={`flex items-center gap-3 rounded-2xl border p-4 transition-all ${
-        formData.paymentMethod === 'paypal'
-          ? 'border-[#0F4CFF] bg-[#0F4CFF]/5 shadow-md'
-          : 'border-gray-200 hover:border-[#0F4CFF]/30'
-      }`}
-    >
-      <div className="rounded-xl bg-blue-100 p-2">
-        <Wallet className="h-5 w-5 text-blue-600" />
-      </div>
+              {/* PayPal */}
+              <button
+                type="button"
+                onClick={() =>
+                  setFormData({ ...formData, paymentMethod: 'paypal' })
+                }
+                className={`flex items-center gap-2 sm:gap-3 rounded-xl sm:rounded-2xl border p-3 sm:p-4 transition-all ${
+                  formData.paymentMethod === 'paypal'
+                    ? 'border-[#0F4CFF] bg-[#0F4CFF]/5 shadow-md'
+                    : 'border-gray-200 hover:border-[#0F4CFF]/30'
+                }`}
+              >
+                <div className="rounded-lg sm:rounded-xl bg-blue-100 p-1.5 sm:p-2">
+                  <Wallet className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
+                </div>
 
-      <div className="text-left">
-        <p className="text-sm font-semibold text-[#111827]">
-          PayPal
-        </p>
+                <div className="text-left">
+                  <p className="text-xs sm:text-sm font-semibold text-[#111827]">
+                    PayPal
+                  </p>
 
-        <p className="text-xs text-gray-500">
-          Pago seguro online
-        </p>
-      </div>
-    </button>
+                  <p className="hidden sm:block text-xs text-gray-500">
+                    Pago seguro online
+                  </p>
+                </div>
+              </button>
 
-    {/* Efectivo */}
-    <button
-      type="button"
-      onClick={() =>
-        setFormData({ ...formData, paymentMethod: 'cash' })
-      }
-      className={`flex items-center gap-3 rounded-2xl border p-4 transition-all ${
-        formData.paymentMethod === 'cash'
-          ? 'border-[#0F4CFF] bg-[#0F4CFF]/5 shadow-md'
-          : 'border-gray-200 hover:border-[#0F4CFF]/30'
-      }`}
-    >
-      <div className="rounded-xl bg-yellow-100 p-2">
-        <BadgeDollarSign className="h-5 w-5 text-yellow-600" />
-      </div>
+              {/* Efectivo */}
+              <button
+                type="button"
+                onClick={() =>
+                  setFormData({ ...formData, paymentMethod: 'cash' })
+                }
+                className={`flex items-center gap-2 sm:gap-3 rounded-xl sm:rounded-2xl border p-3 sm:p-4 transition-all ${
+                  formData.paymentMethod === 'cash'
+                    ? 'border-[#0F4CFF] bg-[#0F4CFF]/5 shadow-md'
+                    : 'border-gray-200 hover:border-[#0F4CFF]/30'
+                }`}
+              >
+                <div className="rounded-lg sm:rounded-xl bg-yellow-100 p-1.5 sm:p-2">
+                  <BadgeDollarSign className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-600" />
+                </div>
 
-      <div className="text-left">
-        <p className="text-sm font-semibold text-[#111827]">
-          Pago contra entrega
-        </p>
+                <div className="text-left">
+                  <p className="text-xs sm:text-sm font-semibold text-[#111827]">
+                    Contra entrega
+                  </p>
 
-        <p className="text-xs text-gray-500">
-          Efectivo al recibir
-        </p>
-      </div>
-    </button>
-  </div>
-</div>
+                  <p className="hidden sm:block text-xs text-gray-500">
+                    Efectivo al recibir
+                  </p>
+                </div>
+              </button>
+            </div>
+          </div>
 
-{/* CONTENIDO DINÁMICO SEGÚN MÉTODO */}
-<div className="mt-4">
+          {/* CONTENIDO DINÁMICO SEGÚN MÉTODO */}
+          <div className="mt-4">
 
-  {/* TARJETA */}
-  {formData.paymentMethod === 'card' && (
-    <div className="space-y-4 rounded-2xl border border-[#0F4CFF]/20 bg-[#0F4CFF]/5 p-5">
+            {/* TARJETA */}
+            {formData.paymentMethod === 'card' && (
+              <div className="space-y-3 sm:space-y-4 rounded-xl sm:rounded-2xl border border-[#0F4CFF]/20 bg-[#0F4CFF]/5 p-4 sm:p-5">
 
-      <h3 className="text-sm font-bold text-[#111827]">
-        Información de tarjeta
-      </h3>
+                <h3 className="text-sm font-bold text-[#111827]">
+                  Información de tarjeta
+                </h3>
 
-      <input
-        type="text"
-        placeholder="Número de tarjeta"
-        className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-[#0F4CFF] focus:ring-2 focus:ring-[#0F4CFF]/20"
-      />
+                <input
+                  type="text"
+                  placeholder="Número de tarjeta"
+                  className="w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 sm:py-3 text-sm outline-none focus:border-[#0F4CFF] focus:ring-2 focus:ring-[#0F4CFF]/20"
+                />
 
-      <div className="grid grid-cols-2 gap-4">
-        <input
-          type="text"
-          placeholder="MM/YY"
-          className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-[#0F4CFF] focus:ring-2 focus:ring-[#0F4CFF]/20"
-        />
+                {/* CORRECCIÓN 4: grid-cols-1 en móvil, sm:grid-cols-2 en desktop */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                  <input
+                    type="text"
+                    placeholder="MM/YY"
+                    className="w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 sm:py-3 text-sm outline-none focus:border-[#0F4CFF] focus:ring-2 focus:ring-[#0F4CFF]/20"
+                  />
 
-        <input
-          type="text"
-          placeholder="CVV"
-          className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-[#0F4CFF] focus:ring-2 focus:ring-[#0F4CFF]/20"
-        />
-      </div>
-    </div>
-  )}
+                  <input
+                    type="text"
+                    placeholder="CVV"
+                    className="w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 sm:py-3 text-sm outline-none focus:border-[#0F4CFF] focus:ring-2 focus:ring-[#0F4CFF]/20"
+                  />
+                </div>
+              </div>
+            )}
 
-  {/* TRANSFERENCIA */}
-  {formData.paymentMethod === 'bank' && (
-    <div className="rounded-2xl border border-[#00D084]/20 bg-[#00D084]/5 p-5">
-      <h3 className="text-sm font-bold text-[#111827]">
-        Transferencia bancaria
-      </h3>
+            {/* TRANSFERENCIA */}
+            {formData.paymentMethod === 'bank' && (
+              <div className="rounded-xl sm:rounded-2xl border border-[#00D084]/20 bg-[#00D084]/5 p-4 sm:p-5">
+                <h3 className="text-sm font-bold text-[#111827]">
+                  Transferencia bancaria
+                </h3>
 
-      <div className="mt-3 space-y-2 text-sm text-gray-600">
-        <p><span className="font-semibold">Banco:</span> BAC</p>
-        <p><span className="font-semibold">Cuenta:</span> 123456789</p>
-        <p><span className="font-semibold">Titular:</span> SubliNet Nicaragua</p>
-      </div>
-    </div>
-  )}
+                <div className="mt-3 space-y-2 text-sm text-gray-600">
+                  <p><span className="font-semibold">Banco:</span> BAC</p>
+                  <p><span className="font-semibold">Cuenta:</span> 123456789</p>
+                  <p><span className="font-semibold">Titular:</span> SubliNet Nicaragua</p>
+                </div>
+              </div>
+            )}
 
-  {/* PAYPAL */}
-  {formData.paymentMethod === 'paypal' && (
-    <div className="rounded-2xl border border-blue-200 bg-blue-50 p-5 text-center">
-      <p className="text-sm font-medium text-gray-700">
-        Serás redirigido a PayPal para completar el pago.
-      </p>
+            {/* PAYPAL */}
+            {formData.paymentMethod === 'paypal' && (
+              <div className="rounded-xl sm:rounded-2xl border border-blue-200 bg-blue-50 p-4 sm:p-5 text-center">
+                <p className="text-sm font-medium text-gray-700">
+                  Serás redirigido a PayPal para completar el pago.
+                </p>
 
-      <button
-        type="button"
-        className="mt-4 rounded-xl bg-blue-600 px-6 py-3 text-sm font-bold text-white transition-all hover:scale-105"
-      >
-        Continuar con PayPal
-      </button>
-    </div>
-  )}
+                <button
+                  type="button"
+                  className="mt-4 rounded-xl bg-blue-600 px-6 py-2.5 sm:py-3 text-sm font-bold text-white transition-all hover:scale-105"
+                >
+                  Continuar con PayPal
+                </button>
+              </div>
+            )}
 
-  {/* EFECTIVO */}
-  {formData.paymentMethod === 'cash' && (
-    <div className="rounded-2xl border border-yellow-200 bg-yellow-50 p-5">
-      <h3 className="text-sm font-bold text-[#111827]">
-        Pago contra entrega
-      </h3>
+            {/* EFECTIVO */}
+            {formData.paymentMethod === 'cash' && (
+              <div className="rounded-xl sm:rounded-2xl border border-yellow-200 bg-yellow-50 p-4 sm:p-5">
+                <h3 className="text-sm font-bold text-[#111827]">
+                  Pago contra entrega
+                </h3>
 
-      <p className="mt-2 text-sm text-gray-600">
-        Pagarás en efectivo al recibir tu pedido.
-      </p>
-    </div>
-  )}
-</div>
+                <p className="mt-2 text-sm text-gray-600">
+                  Pagarás en efectivo al recibir tu pedido.
+                </p>
+              </div>
+            )}
+          </div>
 
           <div className="rounded-xl bg-gray-50 p-4">
             <div className="flex justify-between text-sm">
@@ -487,6 +497,4 @@ const [formData, setFormData] = useState({
       </div>
     </div>
   );
-
-  
 }
