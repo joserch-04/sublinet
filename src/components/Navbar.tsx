@@ -33,7 +33,7 @@ export default function Navbar() {
         <span className="text-xl font-bold tracking-tight text-[#0F4CFF]">
           SUBL<span className="text-[#00D084]">INET</span>
          </span>
-</Link>
+      </Link>
 
         {/* Desktop Nav */}
         <div className="hidden items-center gap-1 md:flex">

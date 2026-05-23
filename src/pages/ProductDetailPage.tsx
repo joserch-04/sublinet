@@ -70,7 +70,7 @@ export default function ProductDetailPage() {
           {/* Product Image */}
           <div className="overflow-hidden rounded-2xl bg-gray-50">
             <img
-              src={product.image}
+              src={product.images.filter((image) => image.color === selectedColor)[0].url}
               alt={product.name}
               className="h-full w-full object-cover"
             />
@@ -136,7 +136,7 @@ export default function ProductDetailPage() {
             <div className="mt-6">
               <label className="text-sm font-semibold text-[#111827]">Tu diseño</label>
               <div className="mt-2">
-                <DesignUploader onDesignUpload={handleDesignUpload} previewProduct={product.image} />
+                <DesignUploader onDesignUpload={handleDesignUpload} previewProduct={product.images.filter((image) => image.color === selectedColor)[0].url} />
               </div>
             </div>
 

@@ -14,7 +14,12 @@ const demoItems: CartItem[] = [
       name: 'Taza Mágica 11oz',
       description: 'Taza que revela tu diseño con calor',
       basePrice: 299,
-      image: '/images/products/taza-magica.jpg',
+      images: [
+        {
+          color: 'Blanco',
+          url: '/images/products/taza-magica.jpg'
+        }
+      ],
       colors: ['Blanco', 'Negro'],
       category: 'tazas',
       popular: true,
@@ -32,7 +37,12 @@ const demoItems: CartItem[] = [
       name: 'Playera Premium Algodón',
       description: 'Playera 100% algodón peinado',
       basePrice: 349,
-      image: '/images/products/playera.jpg',
+      images: [
+        {
+          color: 'Blanco',
+          url: '/images/products/playera.jpg'
+        }
+      ],
       colors: ['Blanco', 'Negro', 'Azul'],
       sizes: ['S', 'M', 'L', 'XL'],
       category: 'ropa',
@@ -201,7 +211,7 @@ export default function OrdersPage() {
                       {/* Product Preview with Design Overlay */}
                       <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-lg bg-gray-100">
                         <img
-                          src={item.product.image}
+                          src={item.product.images.filter((image) => image.color === item.selectedColor)[0].url}
                           alt={item.product.name}
                           className="h-full w-full object-cover"
                         />

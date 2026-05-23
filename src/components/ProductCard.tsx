@@ -14,7 +14,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         {/* Image */}
         <div className="relative aspect-square overflow-hidden bg-gray-100">
           <img
-            src={product.image}
+            src={product.images[0].url}
             alt={product.name}
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
             loading="lazy"

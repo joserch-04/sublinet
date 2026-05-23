@@ -1,10 +1,15 @@
+export interface ColorImages {
+  color: string;
+  url: string;
+}
+
 export interface Product {
   id: string;
   name: string;
   category: string;
   description: string;
   basePrice: number;      
-  image: string;
+  images: ColorImages[];
   colors: string[];
   sizes?: string[];
   rating: number;
