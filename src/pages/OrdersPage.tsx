@@ -6,55 +6,63 @@ import { useAuth } from '@/context/AuthContext';
 import { formatPrice, getStatusColor, getStatusLabel } from '@/utils/helpers';
 import type { Order, CartItem } from '@/types';
 
-// ─── Datos demo SOLO para admin o usuarios sin pedidos ───
+// ─── Datos demo actualizados con la estructura e IDs reales de products.ts ───
 const demoItems: CartItem[] = [
   {
     product: {
-      id: 'prod-1',
-      name: 'Taza Mágica 11oz',
-      description: 'Taza que revela tu diseño con calor',
-      basePrice: 299,
+      id: 'mug-02',
+      name: 'Taza Mágica',
+      description: 'Taza que cambia de color con el calor. Revela tu diseño al verter líquido caliente.',
+      basePrice: 240,
       images: [
         {
           color: 'Blanco',
-          url: '/images/products/taza-magica.jpg'
+          url: 'https://i.ibb.co/Xr6fGyG7/Taza-Magica-Blanco.png',
+        },
+        {
+          color: 'Azul',
+          url: 'https://i.ibb.co/vxpB564D/Taza-Magica-Azul.png'
         }
       ],
-      colors: ['Blanco', 'Negro'],
+      colors: ['Blanco', 'Azul'],
       category: 'tazas',
+      rating: 4.9,
+      reviews: 189,
       popular: true,
-      rating: 4.8,
-      reviews: 124,
     },
     quantity: 2,
-    designUrl: '/images/designs/logo-demo.png',
+    designUrl: 'https://i.ibb.co/vxKKkGCn/Taza-Blanca.png', // Fallback visual de diseño demo
     selectedColor: 'Blanco',
-    designPosition: { x: 50, y: 45, scale: 1.2 },
   },
   {
     product: {
-      id: 'prod-2',
-      name: 'Playera Premium Algodón',
-      description: 'Playera 100% algodón peinado',
-      basePrice: 349,
+      id: 'shirt-01',
+      name: 'Camiseta Premium',
+      description: 'Camiseta 100% poliéster de alto rendimiento. Ideal para sublimación con máxima definición de color.',
+      basePrice: 350,
       images: [
         {
           color: 'Blanco',
-          url: '/images/products/playera.jpg'
+          url: 'https://i.ibb.co/7NN8FBkD/Camisa-Premium-Blanca.png'
+        },
+        {
+          color: 'Gris claro',
+          url: 'https://i.ibb.co/whTxysC5/Camisa-Premium-Gris.png'
+        },
+        {
+          color: 'Crema',
+          url: 'https://i.ibb.co/Y7Q3CtM7/Camisa-Premium-Beige.png'
         }
       ],
-      colors: ['Blanco', 'Negro', 'Azul'],
-      sizes: ['S', 'M', 'L', 'XL'],
-      category: 'ropa',
+      colors: ['Blanco', 'Gris claro', 'Crema'],
+      sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+      rating: 4.7,
+      reviews: 412,
       popular: true,
-      rating: 4.9,
-      reviews: 89,
     },
     quantity: 1,
-    designUrl: '/images/designs/arte-demo.png',
-    selectedColor: 'Negro',
-    selectedSize: 'L',
-    designPosition: { x: 50, y: 35, scale: 0.8 },
+    selectedColor: 'Blanco',
+    selectedSize: 'M',
   },
 ];
 
@@ -63,7 +71,7 @@ const demoOrders: Order[] = [
     id: 'ORD-2026-001',
     items: [demoItems[0]],
     status: 'printing',
-    total: 598,
+    total: 480,
     createdAt: '2026-05-05',
     estimatedDelivery: '2026-05-10',
     trackingNumber: 'SUB789456123',
@@ -72,7 +80,7 @@ const demoOrders: Order[] = [
     id: 'ORD-2026-002',
     items: [...demoItems],
     status: 'shipped',
-    total: 947,
+    total: 830,
     createdAt: '2026-04-28',
     estimatedDelivery: '2026-05-03',
     trackingNumber: 'SUB123456789',
@@ -109,7 +117,7 @@ export default function OrdersPage() {
     );
   }
 
-  // ─── Admin: mostrar mensaje especial o panel de todos los pedidos ───
+  // ─── Admin ───
   if (user.role === 'admin') {
     return (
       <div className="flex min-h-[60vh] flex-col items-center justify-center animate-fade-in">
@@ -131,7 +139,6 @@ export default function OrdersPage() {
     );
   }
 
-  // ─── Cliente: mostrar sus pedidos reales o demo si no tiene ───
   const allOrders = realOrders.length > 0 ? realOrders : demoOrders;
 
   if (allOrders.length === 0) {
@@ -203,59 +210,77 @@ export default function OrdersPage() {
                   </span>
                 </div>
 
-                {/* ─── Products List with Design Preview ─── */}
+                {/* Products List */}
                 <div className="mt-6 space-y-4">
                   <h3 className="text-sm font-semibold text-[#111827]">Productos</h3>
-                  {selectedOrder.items.map((item, idx) => (
-                    <div key={idx} className="flex gap-4 rounded-xl border border-gray-100 p-3">
-                      {/* Product Preview with Design Overlay */}
-                      <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-lg bg-gray-100">
-                        <img
-                          src={item.product.images.filter((image) => image.color === item.selectedColor)[0].url}
-                          alt={item.product.name}
-                          className="h-full w-full object-cover"
-                        />
-                        {item.designUrl && item.designPosition && (
-                          <div
-                            className="absolute pointer-events-none"
-                            style={{
-                              left: `${item.designPosition.x}%`,
-                              top: `${item.designPosition.y}%`,
-                              transform: `translate(-50%, -50%) scale(${item.designPosition.scale * 0.35})`,
+                  {selectedOrder.items.map((item, idx) => {
+                    
+                    // Buscar coincidencia exacta normalizada limpiando espacios y mayúsculas
+                    const matchedImage = item.product?.images?.find(
+                      (img) => img.color?.trim().toLowerCase() === item.selectedColor?.trim().toLowerCase()
+                    );
+                    
+                    // Servir la imagen correspondiente, o la primera del arreglo de dicho objeto
+                    const finalImgUrl = matchedImage?.url || item.product?.images?.[0]?.url || 'https://via.placeholder.com/150';
+
+                    return (
+                      <div key={idx} className="flex gap-4 rounded-xl border border-gray-100 p-3">
+                        {/* Product Preview Container con protección e inyección de fallback directo */}
+                        <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-lg bg-gray-100 flex items-center justify-center border border-gray-50">
+                          <img
+                            src={finalImgUrl}
+                            alt={item.product.name}
+                            className="h-full w-full object-cover"
+                            onError={(e) => {
+                              e.currentTarget.onerror = null; // Evitar ciclos de ejecución recursiva
+                              // Fallback secundario a imagen de producción genérica de tazas/camisas si el hosting falla
+                              e.currentTarget.src = 'https://i.ibb.co/vxKKkGCn/Taza-Blanca.png';
                             }}
-                          >
-                            <img
-                              src={item.designUrl}
-                              alt="Diseño"
-                              className="h-[150px] w-[150px] object-contain rounded-sm"
-                            />
-                          </div>
-                        )}
-                        {item.designUrl && !item.designPosition && (
-                          <div className="absolute top-1 right-1 h-3 w-3 rounded-full bg-[#0F4CFF] border-2 border-white" />
-                        )}
-                      </div>
-                      <div className="flex flex-1 flex-col justify-center">
-                        <h4 className="text-sm font-semibold text-[#111827]">{item.product.name}</h4>
-                        <p className="text-xs text-gray-500">
-                          Color: {item.selectedColor}
-                          {item.selectedSize && ` · Talla: ${item.selectedSize}`}
-                        </p>
-                        <div className="mt-1 flex items-center gap-2">
-                          {item.designUrl && (
-                            <span className="inline-flex items-center gap-1 rounded-full bg-[#0F4CFF]/10 px-2 py-0.5 text-xs font-medium text-[#0F4CFF]">
-                              <Palette className="h-3 w-3" />
-                              Personalizado
-                            </span>
+                          />
+                          {item.designUrl && item.designPosition && (
+                            <div
+                              className="absolute pointer-events-none"
+                              style={{
+                                left: `${item.designPosition.x}%`,
+                                top: `${item.designPosition.y}%`,
+                                transform: `translate(-50%, -50%) scale(${item.designPosition.scale * 0.35})`,
+                              }}
+                            >
+                              <img
+                                src={item.designUrl}
+                                alt="Diseño"
+                                className="h-[150px] w-[150px] object-contain rounded-sm"
+                                onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                              />
+                            </div>
                           )}
-                          <span className="text-xs text-gray-400">x{item.quantity}</span>
+                          {item.designUrl && !item.designPosition && (
+                            <div className="absolute top-1 right-1 h-3 w-3 rounded-full bg-[#0F4CFF] border-2 border-white" />
+                          )}
                         </div>
-                        <p className="mt-1 text-sm font-semibold text-[#0F4CFF]">
-                          {formatPrice(item.product.basePrice * item.quantity)}
-                        </p>
+                        
+                        <div className="flex flex-1 flex-col justify-center">
+                          <h4 className="text-sm font-semibold text-[#111827]">{item.product.name}</h4>
+                          <p className="text-xs text-gray-500">
+                            Color: {item.selectedColor}
+                            {item.selectedSize && ` · Talla: ${item.selectedSize}`}
+                          </p>
+                          <div className="mt-1 flex items-center gap-2">
+                            {item.designUrl && (
+                              <span className="inline-flex items-center gap-1 rounded-full bg-[#0F4CFF]/10 px-2 py-0.5 text-xs font-medium text-[#0F4CFF]">
+                                <Palette className="h-3 w-3" />
+                                Personalizado
+                              </span>
+                            )}
+                            <span className="text-xs text-gray-400">x{item.quantity}</span>
+                          </div>
+                          <p className="mt-1 text-sm font-semibold text-[#0F4CFF]">
+                            {formatPrice(item.product.basePrice * item.quantity)}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
 
                 {/* Tracking */}
